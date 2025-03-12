@@ -1,6 +1,6 @@
 import pygame
 from pacman import Pacman
-
+from map import Map 
 class Game:
     def  __init__(self):
         pygame.init()
@@ -9,6 +9,9 @@ class Game:
         pygame.display.set_caption("Pacman")
         self.running = True
         self.pacman = Pacman(self)
+        self.consumables = pygame.sprite.Group()
+        self.map = Map()
+        self.map.load_map(self)
 
     def run(self):
         while self.running:
@@ -31,6 +34,10 @@ class Game:
     def _update_screen(self):
         self.window.fill((0, 0, 0))
         self.pacman.draw(self)
+
+        for cons in self.consumables.sprites():
+            cons.draw()
+
         pygame.display.update()
         self.clock.tick(60)
 
