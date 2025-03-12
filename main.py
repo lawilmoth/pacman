@@ -15,8 +15,15 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-
-            self.pacman.move("right")
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        self.pacman.set_move("left")
+                    if event.key == pygame.K_RIGHT:
+                        self.pacman.set_move("right")
+                    elif event.key == pygame.K_UP:
+                        self.pacman.set_move("up")
+            self.pacman.move()
+            
             self._update_screen()
 
     def _update_screen(self):
