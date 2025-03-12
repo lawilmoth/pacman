@@ -22,6 +22,8 @@ class Game:
                         self.pacman.set_move("right")
                     elif event.key == pygame.K_UP:
                         self.pacman.set_move("up")
+                    elif event.key == pygame.K_DOWN:
+                        self.pacman.set_move("down")
             self.pacman.move()
             
             self._update_screen()
