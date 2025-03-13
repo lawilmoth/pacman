@@ -33,7 +33,8 @@ class Game:
 
     def _update_screen(self):
         self.window.fill((0, 0, 0))
-        self.pacman.draw(self)
+        self.pacman.update()
+        self.pacman.blit(self)
 
         for cons in self.consumables.sprites():
             cons.draw()
