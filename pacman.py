@@ -1,10 +1,10 @@
 import pygame
 from spritesheet import SpriteSheet
-
+from map import Map
 class Pacman(pygame.sprite.Sprite):
-    FRAME_RATE =5
+    FRAME_RATE = 4
     PACMAN_SIZE = 15
-    PACMAN_SPEED = 4
+    PACMAN_SPEED = Map.GAP//4
     
     def __init__(self, game):
         super().__init__()
