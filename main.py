@@ -42,7 +42,7 @@ class Game:
 
     def _update_screen(self):
         self.window.fill((0, 0, 0))
-        #self.window.blit(self.map.bg_image, (0, 0))
+        self.window.blit(self.map.bg_image, (0, 0))
         self.pacman.update()
         self.pacman.blit(self)
 
