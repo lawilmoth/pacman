@@ -26,15 +26,15 @@ class Map:
                 [3, 1, 3, 3, 3, 3, 1, 3, 3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 1, 3, 3, 1, 3, 3, 3, 3, 1, 3],
                 [3, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 3],
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 0, 3, 3, 0, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3],
-                [0, 0, 0, 0, 0, 3, 1, 3, 3, 3, 3, 3, 0, 3, 3, 0, 3, 3, 3, 3, 3, 1, 3, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 3, 1, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 1, 3, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 0, 0, 0, 0, 0],
-                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 0, 0, 0, 0, 0, 0, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
-                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 0, 0, 0, 0, 0, 0, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
-                [0, 0, 0, 0, 0, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 3, 1, 3, 3, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 3, 1, 3, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 0, 0, 0, 0, 0],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 0, 3, 3, 0, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
                 [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
                 [3, 1, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 1, 3, 3, 1, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 1, 3],
@@ -76,14 +76,61 @@ class Map:
                         )
                     game.consumables.add(cons)
                 if item == 3:
-                    wall = Wall(
-                        game, 
-                        j*self.GAP + self.INTIIAL_X_GAP, 
-                        i*self.GAP + self.INTIIAL_Y_GAP, 
-                        3,
-                        3, 
-                        (0, 0, 255)
+                    #Top wall
+                    if i == 0 :
+                        wall = Wall(
+                            game, 
+                            j*self.GAP + self.INTIIAL_X_GAP, 
+                            i*self.GAP , 
+                            self.GAP,
+                            self.INTIIAL_Y_GAP, 
+                            (0, 0, 255)
+                            )
+                    #Left wall
+                    elif j == 0 and i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3:
+                        wall = Wall(
+                            game, 
+                            j*self.GAP , 
+                            i*self.GAP + self.INTIIAL_Y_GAP, 
+                            self.INTIIAL_X_GAP,
+                            self.GAP, 
+                            (0, 0, 255)
+                            )
+
+                    #bottom wall
+                    elif i == len(self.map_grid) - 1:
+                        wall = Wall(
+                            game, 
+                            j*self.GAP + self.INTIIAL_X_GAP, 
+                            i*self.GAP + self.INTIIAL_Y_GAP, 
+                            self.GAP,
+                            self.GAP, 
+                            (0, 0, 255)
+                            
                         )
+                    #right wall
+                    elif j == len(self.map_grid[0]) - 1 and i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3:
+                        wall = Wall(
+                            game, 
+                            j*self.GAP + self.INTIIAL_X_GAP, 
+                            i*self.GAP + self.INTIIAL_Y_GAP, 
+                            self.GAP,
+                            self.GAP, 
+                            (0, 0, 255)
+                            )
+
+                    if  i < len(self.map_grid) - 1 and j < len(self.map_grid[0]) - 1 :
+                        if self.map_grid[i+1][j] == 3 and self.map_grid[i][j+1] == 3 and self.map_grid[i+1][j+1] == 3 :
+                            wall = Wall(
+                                game, 
+                                j*self.GAP + self.INTIIAL_X_GAP, 
+                                i*self.GAP + self.INTIIAL_Y_GAP, 
+                                self.GAP,
+                                self.GAP, 
+                                (0, 0, 255)
+                                )
+                        
+
                     game.walls.add(wall)
                 if item == 4:
                     game.pacman.x = j*self.GAP + self.INTIIAL_X_GAP//2 - game.pacman.PACMAN_SIZE 
@@ -102,7 +149,7 @@ class Wall(pygame.sprite.Sprite):
         self.color = color
         self.game = game
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.draw()
+        
 
 
     def draw(self):

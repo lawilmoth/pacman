@@ -1,11 +1,14 @@
 import pygame
+import time
 from pacman import Pacman
 from map import Map 
 class Game:
     def  __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
-        self.window = pygame.display.set_mode((800, 800))
+        self.WIDTH = 670
+        self.HEIGHT = 800
+        self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Pacman")
         self.running = True
         self.pacman = Pacman(self)
@@ -22,7 +25,9 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         self.pacman.set_move("left")
-                    if event.key == pygame.K_RIGHT:
+                        print("left")
+
+                    elif event.key == pygame.K_RIGHT:
                         self.pacman.set_move("right")
                     elif event.key == pygame.K_UP:
                         self.pacman.set_move("up")
@@ -31,25 +36,29 @@ class Game:
             collisions = pygame.sprite.spritecollide(self.pacman, self.consumables, True)
             if collisions:
                 print(len(self.consumables))
-            wall_collisions = pygame.sprite.spritecollide(self.pacman, self.walls, False)
-            if wall_collisions:
-                self.pacman.x = self.pacman.x - self.pacman.speed[0]
-                self.pacman.y = self.pacman.y - self.pacman.speed[1]
-                self.pacman.speed = (0, 0)
-            self.pacman.move()
+
             
+
+            
+
+
+
+            self.pacman.move()
+
+            self.pacman.update()
+
             self._update_screen()
+
 
     def _update_screen(self):
         self.window.fill((0, 0, 0))
         self.window.blit(self.map.bg_image, (0, 0))
-        self.pacman.update()
-        self.pacman.blit(self)
 
         for cons in self.consumables.sprites():
             cons.draw()
         for wall in self.walls.sprites():
             wall.draw()
+        self.pacman.blit(self)
 
         pygame.display.update()
         self.clock.tick(60)
