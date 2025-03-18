@@ -23,8 +23,8 @@ class PM_Sprite(Sprite):
         game.window.blit(self.image, (self.x, self.y))
     
     def update(self):
-        self.count += 1
-        if self.count % self.FRAME_RATE == 0:
+        self.current_frame += 1
+        if self.current_frame % self.FRAME_RATE == 0:
             self.current_sprite = (self.current_sprite + 1)%len(self.sprites)
             self.image = self.sprites[self.current_sprite]
         

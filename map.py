@@ -133,8 +133,8 @@ class Map:
 
                     game.walls.add(wall)
                 if item == 4:
-                    game.pacman.x = j*self.GAP + self.INTIIAL_X_GAP//2 - game.pacman.PACMAN_SIZE 
-                    game.pacman.y = i*self.GAP + self.INTIIAL_Y_GAP//2 - game.pacman.PACMAN_SIZE 
+                    game.pacman.x = j*self.GAP + self.INTIIAL_X_GAP//2 - game.pacman.SIZE 
+                    game.pacman.y = i*self.GAP + self.INTIIAL_Y_GAP//2 - game.pacman.SIZE 
 
 
 
