@@ -1,33 +1,35 @@
 import time
 import pygame
-from spritesheet import SpriteSheet
-from map import Map
-class Pacman(pygame.sprite.Sprite):
+
+
+from pm_sprites import PM_Sprite
+class Pacman(PM_Sprite):
     FRAME_RATE = 1
     PACMAN_SIZE = 15
-    PACMAN_SPEED = Map.GAP//4
+    
     
     def __init__(self, game):
-        super().__init__()
-        sprite_sheet = SpriteSheet("images\pacman.png")
-        self.x = 300
-        self.y = 300
+        
+        self.starting_x = 300
+        self.starting_y = 300
+        super().__init__(self.starting_x, self.starting_y, game)
+
         self.speed = (0, 0)
         
         self.game = game
         self.direction = "stop"
 
         #Found the frame with the circle
-        self.circle_frame = sprite_sheet.get_image(457 + self.PACMAN_SIZE*2 , 0, self.PACMAN_SIZE, self.PACMAN_SIZE)
+        self.circle_frame = self.sprite_sheet.get_image(457 + self.PACMAN_SIZE*2 , 0, self.PACMAN_SIZE, self.PACMAN_SIZE)
         self.rect = self.circle_frame.get_rect()
         self.stop_sprites = [self.circle_frame]
         #Found 2 frames moving right 
-        self.sprites_right = sprite_sheet.get_images(457, 0, self.PACMAN_SIZE,  self.PACMAN_SIZE, 2) #Changed to only be 2 frames because one is the circle
+        self.sprites_right = self.sprite_sheet.get_images(457, 0, self.PACMAN_SIZE,  self.PACMAN_SIZE, 2) #Changed to only be 2 frames because one is the circle
         #added the circle
         self.sprites_right.append(self.circle_frame)
 
         #Found 2 frames moving right 
-        self.sprites_left = sprite_sheet.get_images(457, self.PACMAN_SIZE, self.PACMAN_SIZE,  self.PACMAN_SIZE, 2)
+        self.sprites_left = self.sprite_sheet.get_images(457, self.PACMAN_SIZE, self.PACMAN_SIZE,  self.PACMAN_SIZE, 2)
         #added the circle
         self.sprites_left.append(self.circle_frame)
 
@@ -36,24 +38,24 @@ class Pacman(pygame.sprite.Sprite):
         self.current_sprite = 0
         self.image = self.sprites[self.current_sprite]
 
-        self.count = 0
-        self.update()
+        
+
 
     def set_move(self, dir):
         if dir == "right":
             self.direction = "right"
-            self.speed = (self.PACMAN_SPEED,0)
+            self.speed = (self.SPEED,0)
             self.sprites = self.sprites_right
         elif dir == "left":
             self.direction = "left"
-            self.speed = (-self.PACMAN_SPEED,0)
+            self.speed = (-self.SPEED,0)
             self.sprites = self.sprites_left
         elif dir == "up":
             self.direction = "up"
-            self.speed = (0, -self.PACMAN_SPEED)
+            self.speed = (0, -self.SPEED)
         elif dir == "down":
             self.direction = "down"
-            self.speed = (0, self.PACMAN_SPEED)
+            self.speed = (0, self.SPEED)
         elif dir == "stop":
             self.direction = "stop"
             self.speed = (0, 0)
@@ -78,8 +80,8 @@ class Pacman(pygame.sprite.Sprite):
             self.x = - self.PACMAN_SIZE
 
     def update(self):
-        self.count += 1
-        if self.count % self.FRAME_RATE == 0:
+        self.current_frame += 1
+        if self.current_frame % self.FRAME_RATE == 0:
             self.current_sprite = (self.current_sprite + 1)%len(self.sprites)
             self.image = self.sprites[self.current_sprite]
         
@@ -87,7 +89,10 @@ class Pacman(pygame.sprite.Sprite):
 
         self.rect.topleft = (self.x, self.y)
 
-
+    def prepare_turn(self, direction):
+        if self.direction == "right" or self.direction == "left":
+            if direction == "up" or direction == "down":
+                self.set_move(direction)
     def blit(self, game):
         game.window.blit(self.image, (self.x, self.y))
         

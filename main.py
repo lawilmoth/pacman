@@ -1,5 +1,5 @@
 import pygame
-import time
+
 from pacman import Pacman
 from map import Map 
 class Game:
@@ -52,7 +52,7 @@ class Game:
 
     def _update_screen(self):
         self.window.fill((0, 0, 0))
-        self.window.blit(self.map.bg_image, (0, 0))
+        #self.window.blit(self.map.bg_image, (0, 0))
 
         for cons in self.consumables.sprites():
             cons.draw()
@@ -61,7 +61,7 @@ class Game:
         self.pacman.blit(self)
 
         pygame.display.update()
-        self.clock.tick(60)
+        self.clock.tick(15)
 
 ##################-----Main Code------#######################
 game = Game()
