@@ -17,6 +17,7 @@ class PM_Sprite(Sprite):
         
         super().__init__()
         self.sprite_sheet = SpriteSheet("images\pacman.png")
+
         self.rect = pygame.Rect(0, 0, self.SIZE * 3, self.SIZE *3 )
         self.x:int = x
         self.y:int = y
@@ -31,7 +32,7 @@ class PM_Sprite(Sprite):
             "up": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),
             "down": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),    
         }
-        self.update()
+        
         
 
     def blit(self, game):
@@ -61,9 +62,9 @@ class PM_Sprite(Sprite):
                 rect.topleft = (self.rect.centerx + 1.5*self.SPEED +self.OFFSET, self.rect.centery +self.OFFSET)
             elif key == "left":
                 rect.topleft = (self.rect.centerx - 1.5*self.SPEED +self.OFFSET, self.rect.centery +self.OFFSET)
-        pygame.draw.rect(self.game.window, (255, 0, 0), self.rect)
+        
     def can_move(self, direction):
-        if direction != "stop":
+        if direction and direction != "stop":
             for wall in self.game.walls.sprites():
                 if wall.rect.colliderect(self.moves_rects[direction]):
                     return False

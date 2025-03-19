@@ -7,7 +7,7 @@ class Settings:
         self.INITIAL_X_GAP = 11
         self.INITIAL_Y_GAP = 11
         self.PACMAN_SPAWN_X = self.INITIAL_X_GAP + self.TILE_SIZE*12
-        self.PACMAN_SPAWN_Y = self.INITIAL_X_GAP + self.TILE_SIZE*12
+        self.PACMAN_SPAWN_Y = self.INITIAL_X_GAP + self.TILE_SIZE*10
         self.PACMAN_SPRITESHEET_REFERENCE = (457, 1)
 
 

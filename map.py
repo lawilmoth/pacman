@@ -55,6 +55,7 @@ class Map:
 
 
     def load_map(self, game):
+        
         for i, row in enumerate(self.map_grid):
             for j, item in enumerate(row):
                 
@@ -77,38 +78,51 @@ class Map:
                         )
                     game.consumables.add(cons)
                 if item == 3:
+                    if  i < len(self.map_grid) - 1 and j < len(self.map_grid[0]) - 1 :
+                        if self.map_grid[i+1][j] == 3 and self.map_grid[i][j+1] == 3 and self.map_grid[i+1][j+1] == 3 :
+                            wall = Wall(
+                                game, 
+                                j*self.GAP + self.INTIIAL_X_GAP, 
+                                i*self.GAP + self.INTIIAL_Y_GAP, 
+                                self.GAP,
+                                self.GAP, 
+                                (255, 0, 255)
+                                )
+                            game.walls.add(wall)
                     #Top wall
                     if i == 0 :
                         wall = Wall(
                             game, 
-                            j*self.GAP + self.INTIIAL_X_GAP, 
+                            j*self.GAP, 
                             i*self.GAP , 
-                            self.GAP,
+                            self.GAP * 2,
                             self.INTIIAL_Y_GAP, 
                             (0, 0, 255)
                             )
+                        game.walls.add(wall)
                     #Left wall
-                    elif j == 0 and i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3:
+                    elif j == 0 and (i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3):
                         wall = Wall(
                             game, 
-                            j*self.GAP , 
-                            i*self.GAP + self.INTIIAL_Y_GAP, 
-                            self.INTIIAL_X_GAP,
+                            j*self.GAP - self.INTIIAL_X_GAP, 
+                            i*self.GAP , 
+                            self.INTIIAL_X_GAP *2,
                             self.GAP, 
                             (0, 0, 255)
                             )
-
+                        game.walls.add(wall)
                     #bottom wall
                     elif i == len(self.map_grid) - 1:
                         wall = Wall(
                             game, 
-                            j*self.GAP + self.INTIIAL_X_GAP, 
+                            j*self.GAP, 
                             i*self.GAP + self.INTIIAL_Y_GAP, 
-                            self.GAP,
+                            self.GAP*2,
                             self.GAP, 
                             (0, 0, 255)
                             
                         )
+                        game.walls.add(wall)
                     #right wall
                     elif j == len(self.map_grid[0]) - 1 and i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3:
                         wall = Wall(
@@ -119,20 +133,12 @@ class Map:
                             self.GAP, 
                             (0, 0, 255)
                             )
+                        game.walls.add(wall)
 
-                    if  i < len(self.map_grid) - 1 and j < len(self.map_grid[0]) - 1 :
-                        if self.map_grid[i+1][j] == 3 and self.map_grid[i][j+1] == 3 and self.map_grid[i+1][j+1] == 3 :
-                            wall = Wall(
-                                game, 
-                                j*self.GAP + self.INTIIAL_X_GAP, 
-                                i*self.GAP + self.INTIIAL_Y_GAP, 
-                                self.GAP,
-                                self.GAP, 
-                                (0, 0, 255)
-                                )
+
                         
 
-                    game.walls.add(wall)
+                    
                 if item == 4:
                     game.pacman.x = j*self.GAP + self.INTIIAL_X_GAP//2 - game.pacman.SIZE 
                     game.pacman.y = i*self.GAP + self.INTIIAL_Y_GAP//2 - game.pacman.SIZE 

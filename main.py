@@ -2,7 +2,7 @@ import pygame
 
 from pacman import Pacman
 from map import Map
-from ghosts import Ghost
+from ghosts import Ghost, Inky, Pinky
 from settings import Settings
 from sound_mixer import SoundMixer
 class Game:
@@ -23,9 +23,10 @@ class Game:
         self.walls = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
 
-        self.inky = self.ghosts.add(Ghost(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y, "inky"))
-        self.ghosts.add(Ghost(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y, "pinky"))
-
+        self.inky = Inky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
+        self.pinky = Pinky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
+        self.ghosts.add(self.inky)
+        self.ghosts.add(self.pinky)
 
         self.map = Map()
         self.map.load_map(self)
@@ -45,7 +46,7 @@ class Game:
 
             for ghost in self.ghosts.sprites():
                 ghost.update()
-                #ghost.move()
+                ghost.move()
 
 
 
@@ -101,6 +102,7 @@ class Game:
             wall.draw()
 
         for ghost in self.ghosts.sprites():
+            ghost.update()
             ghost.blit(self)
 
         for check in self.pacman.moves_rects.values():
@@ -115,6 +117,7 @@ class Game:
             pass
         pygame.display.update()
 
+        #self.clock.tick(15)
         self.clock.tick(15)
 
 ##################-----Main Code------#######################
