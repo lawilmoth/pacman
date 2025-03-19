@@ -7,7 +7,7 @@ class PM_Sprite(Sprite):
     FRAME_RATE = 1
     SPEED = 24
     SIZE = 14
-    MOVE_DECTECTOR_SIZE = 8
+    MOVE_DECTECTOR_SIZE = 12
 
 
 

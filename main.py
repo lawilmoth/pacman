@@ -19,7 +19,7 @@ class Game:
         self.walls = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
 
-        self.ghosts.add(Pacman(self))
+        
         self.ghosts.add(Ghost(self, self.settings.pacman_spawn_x,self.settings.pacman_spawn_y, "pinky"))
 
 
@@ -38,7 +38,7 @@ class Game:
 
             for ghost in self.ghosts.sprites():
                 ghost.update()
-                #ghost.move()
+                ghost.move()
 
 
 
@@ -50,16 +50,39 @@ class Game:
                 self.running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.pacman.set_move("left")
-                    print("left")
+                    if self.pacman.can_move("left"):
+                        if(self.pacman.direction == "right" or self.pacman.direction == "stop"):
+                            self.pacman.set_move("left")
+                            break
+                    self.pacman.prepare_turn("left")
+
 
                 elif event.key == pygame.K_RIGHT:
-                    self.pacman.set_move("right")
+                    if self.pacman.can_move("right"):
+                        if(self.pacman.direction == "left" or self.pacman.direction == "stop"):
+                            self.pacman.set_move("right")
+                            break
+                    self.pacman.prepare_turn("right")
                 elif event.key == pygame.K_UP:
-                    self.pacman.set_move("up")
+                    if self.pacman.can_move("up"):
+                        if(self.pacman.direction == "down" or self.pacman.direction == "stop"):
+                            self.pacman.set_move("up")
+                            break
+                    self.pacman.prepare_turn("up")
                 elif event.key == pygame.K_DOWN:
-                    self.pacman.set_move("down")
+                    if self.pacman.can_move("down"):
+                        if(self.pacman.direction == "up" or self.pacman.direction == "stop"):
+                            self.pacman.set_move("down")
+                            break
+                    self.pacman.prepare_turn("down")
+        self._execute_turn()
 
+    def _execute_turn(self):
+        if self.pacman.direction == "stop":
+            self.pacman.set_move(self.pacman.prepared_turn)
+        if self.pacman.prepared_turn and self.pacman.can_move(self.pacman.prepared_turn):
+            self.pacman.set_move(self.pacman.prepared_turn)
+            self.pacman.prepared_turn = None
 
     def _update_screen(self):
         self.window.fill((0, 0, 0))

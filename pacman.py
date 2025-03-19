@@ -13,6 +13,7 @@ class Pacman(PM_Sprite):
         self.speed = (0, 0) 
         self.game = game
         self.direction = "stop"
+        self.prepared_turn = None
 
         #Found the frame with the circle
         self.circle_frame = self.sprite_sheet.get_image(
@@ -75,6 +76,20 @@ class Pacman(PM_Sprite):
     def prepare_turn(self, direction):
         if self.direction == "right" or self.direction == "left":
             if direction == "up" or direction == "down":
-                self.set_move(direction)
+                self.prepared_turn = direction
+                return direction
+
+            elif direction == "right" or direction == "left":
+                self.prepared_turn = direction
+                return direction
+        
+        elif self.direction == "up" or self.direction == "down":
+            if direction == "right" or direction == "left":
+                self.prepared_turn = direction
+                return direction
+            elif direction == "up" or direction == "down":
+                self.prepared_turn = direction
+                return direction
+
 
         
