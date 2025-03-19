@@ -51,7 +51,7 @@ class Map:
 
 
             ]
-        print(len(self.map_grid))
+
 
 
     def load_map(self, game):
@@ -115,7 +115,7 @@ class Map:
                             game, 
                             j*self.GAP + self.INTIIAL_X_GAP, 
                             i*self.GAP + self.INTIIAL_Y_GAP, 
-                            self.GAP,
+                            self.GAP * 2,
                             self.GAP, 
                             (0, 0, 255)
                             )
@@ -138,8 +138,8 @@ class Map:
                     game.pacman.y = i*self.GAP + self.INTIIAL_Y_GAP//2 - game.pacman.SIZE 
 
 
+                print(len(game.consumables.sprites()))
 
-        print(len(game.consumables.sprites()))
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y, width, height, color):
         super().__init__()

@@ -4,13 +4,17 @@ from pacman import Pacman
 from map import Map
 from ghosts import Ghost
 from settings import Settings
+from sound_mixer import SoundMixer
 class Game:
     def  __init__(self):
         self.settings = Settings()
         pygame.init()
+        self.sm = SoundMixer()
+        #play beginning sound
+        self.sm.beginning_sound.play()
         self.clock = pygame.time.Clock()
-        self.WIDTH = self.settings.screen_width
-        self.HEIGHT = self.settings.screen_height
+        self.WIDTH = self.settings.SCREEN_WIDTH
+        self.HEIGHT = self.settings.SCREEN_HEIGHT
         self.window = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Pacman")
         self.running = True
@@ -19,8 +23,8 @@ class Game:
         self.walls = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
 
-        
-        self.ghosts.add(Ghost(self, self.settings.pacman_spawn_x,self.settings.pacman_spawn_y, "pinky"))
+        self.inky = self.ghosts.add(Ghost(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y, "inky"))
+        self.ghosts.add(Ghost(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y, "pinky"))
 
 
         self.map = Map()
@@ -31,6 +35,9 @@ class Game:
             self._check_events()
 
             collisions = pygame.sprite.spritecollide(self.pacman, self.consumables, True)
+            if collisions:
+                if not pygame.mixer.get_busy():
+                    self.sm.chomp_sound.play()
             self.pacman.update_image()
 
             self.pacman.move()
@@ -38,7 +45,7 @@ class Game:
 
             for ghost in self.ghosts.sprites():
                 ghost.update()
-                ghost.move()
+                #ghost.move()
 
 
 
@@ -102,9 +109,10 @@ class Game:
             for check in ghost.moves_rects.values():
                 pygame.draw.rect(self.window, (255, 0, 0), check)
         self.pacman.blit(self)
-        print(self.pacman)
+        #print(self.pacman)
         for ghost in self.ghosts.sprites():
-            print(ghost)
+            #print(ghost)
+            pass
         pygame.display.update()
 
         self.clock.tick(15)

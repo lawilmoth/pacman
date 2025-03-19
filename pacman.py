@@ -6,10 +6,11 @@ from pm_sprites import PM_Sprite
 class Pacman(PM_Sprite):
     def __init__(self, game):
         self.settings = game.settings
-        self.ss_pacman_x = 458
+        self.ss_pacman_x = self.settings.PACMAN_SPRITESHEET_REFERENCE[0]
+        self.ss_pacman_y = self.settings.PACMAN_SPRITESHEET_REFERENCE[1]
 
-        self.starting_y = 300
-        super().__init__(game, self.settings.pacman_spawn_x, self.settings.pacman_spawn_x, "pacman")
+        
+        super().__init__(game, self.settings.PACMAN_SPAWN_X, self.settings.PACMAN_SPAWN_Y, "pacman")
         self.speed = (0, 0) 
         self.game = game
         self.direction = "stop"
@@ -21,7 +22,7 @@ class Pacman(PM_Sprite):
             self.sprite_sheet.SS_REFERENCE[1], 
             self.SIZE, self.SIZE
             )
-        self.rect = self.circle_frame.get_rect()
+        #self.rect = self.circle_frame.get_rect()
         self.stop_sprites = [self.circle_frame]
 
 

@@ -1,18 +1,21 @@
 class Settings:
     def __init__(self):
-        self.screen_width = 670
-        self.screen_height = 800
-        self.tile_size = 24
-        self.tile_gap = 2
-        self.initial_x_gap = 11
-        self.initial_y_gap = 11
-        self.pacman_spawn_x = self.initial_x_gap + self.tile_size*12 
-        self.pacman_spawn_y = self.initial_x_gap + self.tile_size*12
+        self.SCREEN_WIDTH = 670
+        self.SCREEN_HEIGHT = 800
+        self.TILE_SIZE = 24
+        self.TILE_GAP = 2
+        self.INITIAL_X_GAP = 11
+        self.INITIAL_Y_GAP = 11
+        self.PACMAN_SPAWN_X = self.INITIAL_X_GAP + self.TILE_SIZE*12
+        self.PACMAN_SPAWN_Y = self.INITIAL_X_GAP + self.TILE_SIZE*12
+        self.PACMAN_SPRITESHEET_REFERENCE = (457, 1)
 
 
-        self.ghost_spawns = {
-            "blinky": (self.initial_x_gap + self.tile_size*12, self.initial_x_gap + self.tile_size*11),
-            "pinky": (self.initial_x_gap + self.tile_size*11, self.initial_x_gap + self.tile_size*11),
-            "inky": (self.initial_x_gap + self.tile_size*13, self.initial_x_gap + self.tile_size*11),
-            "clyde": (self.initial_x_gap + self.tile_size*14, self.initial_x_gap + self.tile_size*11),
+        self.SETTINGS = {
+            "blinky": (self.INITIAL_X_GAP + self.TILE_SIZE*12, self.INITIAL_Y_GAP + self.TILE_SIZE*11),
+            "pinky": (self.INITIAL_X_GAP + self.TILE_SIZE*11, self.INITIAL_Y_GAP + self.TILE_SIZE*11),
+            "inky": (self.INITIAL_X_GAP + self.TILE_SIZE*13, self.INITIAL_Y_GAP + self.TILE_SIZE*11),
+            "clyde": (self.INITIAL_X_GAP + self.TILE_SIZE*14, self.INITIAL_Y_GAP + self.TILE_SIZE*11),
         }
+
+settings = Settings()

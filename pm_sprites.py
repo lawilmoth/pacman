@@ -8,6 +8,7 @@ class PM_Sprite(Sprite):
     SPEED = 24
     SIZE = 14
     MOVE_DECTECTOR_SIZE = 12
+    OFFSET = -6
 
 
 
@@ -16,11 +17,11 @@ class PM_Sprite(Sprite):
         
         super().__init__()
         self.sprite_sheet = SpriteSheet("images\pacman.png")
-        self.rect = pygame.Rect(0, 0, self.SIZE, self.SIZE)
+        self.rect = pygame.Rect(0, 0, self.SIZE * 3, self.SIZE *3 )
         self.x:int = x
         self.y:int = y
         self.name = name
-        print(self.name, self.x, self.y)
+        
 
         self.game = game
 
@@ -30,10 +31,13 @@ class PM_Sprite(Sprite):
             "up": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),
             "down": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),    
         }
-
+        self.update()
+        
 
     def blit(self, game):
         game.window.blit(self.image, (self.x, self.y))
+        #pygame.draw.rect(game.window, (255, 0, 255), self.rect)
+        pass
     
     def update_image(self):
         self.current_frame += 1
@@ -45,19 +49,19 @@ class PM_Sprite(Sprite):
 
         
     def update(self):
-        print(self.x, self.y)
+
         self.rect.topleft = (self.x, self.y)
         
         for key, rect in self.moves_rects.items():
             if key == "up":
-                rect.center = (self.rect.centerx , self.rect.centery - 1.5*self.SPEED)
+                rect.topleft = (self.rect.centerx  +self.OFFSET, self.rect.centery - 1.5*self.SPEED +self.OFFSET)
             elif key == "down":
-                rect.center = (self.rect.centerx , self.rect.centery + 1.5*self.SPEED)
+                rect.topleft = (self.rect.centerx  +self.OFFSET, self.rect.centery + 1.5*self.SPEED +self.OFFSET)
             elif key == "right":
-                rect.center = (self.rect.centerx + 1.5*self.SPEED, self.rect.centery)
+                rect.topleft = (self.rect.centerx + 1.5*self.SPEED +self.OFFSET, self.rect.centery +self.OFFSET)
             elif key == "left":
-                rect.center = (self.rect.centerx - 1.5*self.SPEED, self.rect.centery)
-
+                rect.topleft = (self.rect.centerx - 1.5*self.SPEED +self.OFFSET, self.rect.centery +self.OFFSET)
+        pygame.draw.rect(self.game.window, (255, 0, 0), self.rect)
     def can_move(self, direction):
         if direction != "stop":
             for wall in self.game.walls.sprites():
@@ -66,6 +70,7 @@ class PM_Sprite(Sprite):
         return True
     
     def set_move(self, dir):
+        self.prepared_turn = None
         if dir == "right":
             self.direction = "right"
             self.speed = (self.SPEED,0)
