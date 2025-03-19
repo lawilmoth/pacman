@@ -14,6 +14,7 @@ class Map:
         # 2 = big pellet
         # 3 = wall
         # 4 = pacman
+        # 5 = ghost house
         # Map is 28x32
         self.map_grid = [
                 [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
