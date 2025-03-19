@@ -12,13 +12,15 @@ class PM_Sprite(Sprite):
 
 
     """A class that makes pacman ghosts"""
-    def __init__(self, game, x:int , y:int):
+    def __init__(self, game, x:int , y:int, name:str):
         
         super().__init__()
         self.sprite_sheet = SpriteSheet("images\pacman.png")
         self.rect = pygame.Rect(0, 0, self.SIZE, self.SIZE)
-        self.x = x
-        self.y = y
+        self.x:int = x
+        self.y:int = y
+        self.name = name
+        print(self.name, self.x, self.y)
 
         self.game = game
 
@@ -43,6 +45,7 @@ class PM_Sprite(Sprite):
 
         
     def update(self):
+        print(self.x, self.y)
         self.rect.topleft = (self.x, self.y)
         
         for key, rect in self.moves_rects.items():
@@ -66,21 +69,31 @@ class PM_Sprite(Sprite):
         if dir == "right":
             self.direction = "right"
             self.speed = (self.SPEED,0)
-            
-            #self.sprites = self.sprites_right
+            if self.name == "pacman":
+                self.sprites = self.sprites_right
+
         elif dir == "left":
             self.direction = "left"
             self.speed = (-self.SPEED,0)
-            #self.sprites = self.sprites_left
+            if self.name == "pacman":
+                self.sprites = self.sprites_left
+
         elif dir == "up":
             self.direction = "up"
             self.speed = (0, -self.SPEED)
-            #self.sprites = self.sprites_up
+            if self.name == "pacman":
+                self.sprites = self.sprites_up
+
         elif dir == "down":
             self.direction = "down"
             self.speed = (0, self.SPEED)
-            #self.sprites = self.sprites_down
+            if self.name == "pacman":
+                self.sprites = self.sprites_down
         elif dir == "stop":
             self.direction = "stop"
             self.speed = (0, 0)
-            #self.sprites = self.stop_sprites
+            if self.name == "pacman":
+                self.sprites = self.stop_sprites
+
+    def __str__(self):
+        return f"{self.name} at {self.x}, {self.y}"

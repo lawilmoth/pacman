@@ -5,11 +5,11 @@ import pygame
 from pm_sprites import PM_Sprite
 class Pacman(PM_Sprite):
     def __init__(self, game):
+        self.settings = game.settings
         self.ss_pacman_x = 458
-        self.starting_x = game.settings.pacman_spawn[0]
-        self.starting_y = game.settings.pacman_spawn[1]
+
         self.starting_y = 300
-        super().__init__(self.starting_x, self.starting_y, game)
+        super().__init__(game, self.settings.pacman_spawn_x, self.settings.pacman_spawn_x, "pacman")
         self.speed = (0, 0) 
         self.game = game
         self.direction = "stop"

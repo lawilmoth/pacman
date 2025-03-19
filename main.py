@@ -18,8 +18,11 @@ class Game:
         self.consumables = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
-        self.ghosts.add(Ghost(self, self.settings.ghost_spawns["pinky"][0],self.settings.ghost_spawns["pinky"][1], "pinky"))
-        self.ghosts.add(Ghost(self, self.settings.pacman_spawn[0],self.settings.pacman_spawn[1], "pinky"))
+
+        self.ghosts.add(Pacman(self))
+        self.ghosts.add(Ghost(self, self.settings.pacman_spawn_x,self.settings.pacman_spawn_y, "pinky"))
+
+
         self.map = Map()
         self.map.load_map(self)
 
@@ -76,7 +79,9 @@ class Game:
             for check in ghost.moves_rects.values():
                 pygame.draw.rect(self.window, (255, 0, 0), check)
         self.pacman.blit(self)
-
+        print(self.pacman)
+        for ghost in self.ghosts.sprites():
+            print(ghost)
         pygame.display.update()
 
         self.clock.tick(15)

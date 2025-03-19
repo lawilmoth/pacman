@@ -6,7 +6,8 @@ class Settings:
         self.tile_gap = 2
         self.initial_x_gap = 11
         self.initial_y_gap = 11
-        self.pacman_spawn = (self.initial_x_gap + self.tile_size*12, self.initial_x_gap + self.tile_size*12)
+        self.pacman_spawn_x = self.initial_x_gap + self.tile_size*12 
+        self.pacman_spawn_y = self.initial_x_gap + self.tile_size*12
 
 
         self.ghost_spawns = {
