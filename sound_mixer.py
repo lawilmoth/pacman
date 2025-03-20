@@ -2,7 +2,7 @@ import pygame
 
 class SoundMixer:
     def __init__(self):
-        self.volume = .5
+        self.volume = 0
         pygame.mixer.init()
         
         self.beginning_sound = pygame.mixer.Sound("sounds/pacman_beginning.wav")
