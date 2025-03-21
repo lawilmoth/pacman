@@ -66,11 +66,8 @@ class Pacman(PM_Sprite):
 
             
                 
-
-        if self.x < 0 - 2*self.SIZE:
-            self.x = self.game.WIDTH + self.SIZE
-        elif self.x > self.game.WIDTH + self.SIZE:
-            self.x = - self.SIZE
+        self.check_teleport()
+    
 
 
 

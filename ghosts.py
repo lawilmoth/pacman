@@ -6,14 +6,35 @@ import random
 
 class Ghost(PM_Sprite):
     SPRITE_SHEET_FRAMES = 8
+    scatter_time = 7
     def __init__(self, game, x, y, name="pinky"):
         super().__init__(game, x, y, name)
         self.settings = game.settings
         self.current_direction = "up"
         self.speed = (0, 0)
         self.target = (0, 0)
+        self.mode = "scatter"
+
+    def update_target(self):
+
+        if self.game.frame_count == self.scatter_time*self.settings.FPS:
+            self.mode = "chase"
+            if self.current_direction == "up":
+                self.current_direction = "down"
+            elif self.current_direction == "down":
+                self.current_direction = "up"
+            elif self.current_direction == "left":
+                self.current_direction = "right"
+            elif self.current_direction == "right":
+                self.current_direction = "left"
+            #print(self.target)      
+
+
+        
+
 
     def move(self):
+        self.update_target()
         # if canmove dir, check distance to target
         move_choices = {"up": True,
                         "down":True,
@@ -55,6 +76,9 @@ class Ghost(PM_Sprite):
         self.image = self.sprites[self.current_frame]
         
 
+        self.check_teleport()
+
+
 
 class Pinky(Ghost):
     def __init__(self, game, x, y):
@@ -68,7 +92,11 @@ class Pinky(Ghost):
             self.SPRITE_SHEET_FRAMES)
         self.image = self.sprites[self.current_frame]
 
-        self.target = (0,0)
+    def check_target(self):
+        if self.mode == "scatter":
+            self.target = (0,0)
+        elif self.mode == "chase":
+            self.target = (self.game.pacman.x, self.game.pacman.y)
 
         
 
@@ -85,4 +113,9 @@ class Inky(Ghost):
         
         self.image = self.sprites[self.current_frame]
 
-        self.target= (game.WIDTH, game.HEIGHT)
+    def check_target(self):
+        if self.mode == "scatter":
+            self.target= (self.game.WIDTH, self.game.HEIGHT)
+        elif self.mode == "chase":
+            self.target = (self.game.pacman.x, self.game.pacman.y)
+        

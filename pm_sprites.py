@@ -1,14 +1,15 @@
 from pygame.sprite import Sprite
 import pygame
 from spritesheet import SpriteSheet
-
+from settings import Settings
+settings = Settings()
 class PM_Sprite(Sprite):
     current_frame = 0
     FRAME_RATE = 1
-    SPEED = 24
+    SPEED = settings.TILE_SIZE
     SIZE = 14
-    MOVE_DECTECTOR_SIZE = 12
-    OFFSET = -6
+    MOVE_DECTECTOR_SIZE = 4 * settings.SCALE_FACTOR
+    OFFSET = - settings.SCALE_FACTOR*2
 
 
 
@@ -100,6 +101,15 @@ class PM_Sprite(Sprite):
             self.speed = (0, 0)
             if self.name == "pacman":
                 self.sprites = self.stop_sprites
+    
+    def check_teleport(self):
+        if self.x < 0 - 2*self.SIZE:
+            if self.direction == "left":
+                self.x = self.settings.INITIAL_X_GAP + self.game.settings.TILE_SIZE * (self.game.settings.NUMBER_OF_TILES_X + 1)
+
+        elif self.x > self.game.WIDTH + self.SIZE:
+            if self.direction == "right":
+                self.x = self.settings.INITIAL_X_GAP - self.game.settings.TILE_SIZE
 
     def __str__(self):
         return f"{self.name} at {self.x}, {self.y}"

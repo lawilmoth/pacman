@@ -6,6 +6,7 @@ from ghosts import Ghost, Inky, Pinky
 from settings import Settings
 from sound_mixer import SoundMixer
 class Game:
+    frame_count = 0
     def  __init__(self):
         self.settings = Settings()
         pygame.init()
@@ -99,9 +100,10 @@ class Game:
         for cons in self.consumables.sprites():
             cons.draw()
         for wall in self.walls.sprites():
-            wall.draw()
-
+            #wall.draw()
+            pass
         for ghost in self.ghosts.sprites():
+            ghost.check_target()
             ghost.update()
             ghost.blit(self)
 
@@ -111,13 +113,11 @@ class Game:
             for check in ghost.moves_rects.values():
                 pygame.draw.rect(self.window, (255, 0, 0), check)
         self.pacman.blit(self)
-        #print(self.pacman)
-        for ghost in self.ghosts.sprites():
-            #print(ghost)
-            pass
+
+
         pygame.display.update()
 
-        #self.clock.tick(15)
+        self.frame_count += 1
         self.clock.tick(15)
 
 ##################-----Main Code------#######################

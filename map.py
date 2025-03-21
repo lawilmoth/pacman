@@ -1,14 +1,15 @@
 import pygame
 from consumable import Consumable
 from spritesheet import SpriteSheet
-
+from settings import Settings
+settings = Settings()
 class Map:
     """A tool for building maps"""
-    GAP = 24
-    INTIIAL_X_GAP = 11
-    INTIIAL_Y_GAP = 11
+    TILE_SIZE = settings.TILE_SIZE
+    INITIAL_X_GAP = settings.INITIAL_X_GAP
+    INITIAL_Y_GAP = settings.INITIAL_Y_GAP
     def __init__(self):
-        self.bg_image = SpriteSheet("images\pacman.png").get_image(0, 0, 228, 250)
+        self.bg_image = SpriteSheet("images\pacman.png").get_image(228, 0, 228, 250)
         # 0 = empty space
         # 1 = pellet
         # 2 = big pellet
@@ -62,19 +63,19 @@ class Map:
                 if item == 1:
                     cons = Consumable(
                         game, 
-                        j*self.GAP + self.INTIIAL_X_GAP, 
-                        i*self.GAP + self.INTIIAL_Y_GAP, 
-                        4, 
-                        (255, 255, 255)
+                        j*self.TILE_SIZE + self.INITIAL_X_GAP, 
+                        i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                        settings.CONSUMABLE_SIZE, 
+                        settings.CONSUMABLE_COLOR
                         )
                     game.consumables.add(cons)
                 if item == 2:
                     cons = Consumable(
                         game, 
-                        j*self.GAP + self.INTIIAL_X_GAP, 
-                        i*self.GAP + self.INTIIAL_Y_GAP, 
-                        15, 
-                        (255, 255, 255)
+                        j*self.TILE_SIZE + self.INITIAL_X_GAP, 
+                        i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                        settings.CONSUMABLE_SIZE*5, 
+                        settings.CONSUMABLE_COLOR
                         )
                     game.consumables.add(cons)
                 if item == 3:
@@ -82,10 +83,10 @@ class Map:
                         if self.map_grid[i+1][j] == 3 and self.map_grid[i][j+1] == 3 and self.map_grid[i+1][j+1] == 3 :
                             wall = Wall(
                                 game, 
-                                j*self.GAP + self.INTIIAL_X_GAP, 
-                                i*self.GAP + self.INTIIAL_Y_GAP, 
-                                self.GAP,
-                                self.GAP, 
+                                j*self.TILE_SIZE + self.INITIAL_X_GAP, 
+                                i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                                self.TILE_SIZE,
+                                self.TILE_SIZE, 
                                 (255, 0, 255)
                                 )
                             game.walls.add(wall)
@@ -93,10 +94,10 @@ class Map:
                     if i == 0 :
                         wall = Wall(
                             game, 
-                            j*self.GAP, 
-                            i*self.GAP , 
-                            self.GAP * 2,
-                            self.INTIIAL_Y_GAP, 
+                            j*self.TILE_SIZE, 
+                            i*self.TILE_SIZE , 
+                            self.TILE_SIZE * 2,
+                            self.INITIAL_Y_GAP, 
                             (0, 0, 255)
                             )
                         game.walls.add(wall)
@@ -104,21 +105,21 @@ class Map:
                     elif j == 0 and (i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3):
                         wall = Wall(
                             game, 
-                            j*self.GAP - self.INTIIAL_X_GAP, 
-                            i*self.GAP , 
-                            self.INTIIAL_X_GAP *2,
-                            self.GAP, 
-                            (0, 0, 255)
+                            j*self.TILE_SIZE - 2*self.INITIAL_X_GAP, 
+                            i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                            self.INITIAL_X_GAP *3,
+                            self.TILE_SIZE, 
+                            (255, 0, 0)
                             )
                         game.walls.add(wall)
                     #bottom wall
                     elif i == len(self.map_grid) - 1:
                         wall = Wall(
                             game, 
-                            j*self.GAP, 
-                            i*self.GAP + self.INTIIAL_Y_GAP, 
-                            self.GAP*2,
-                            self.GAP, 
+                            j*self.TILE_SIZE, 
+                            i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                            self.TILE_SIZE*2,
+                            self.TILE_SIZE, 
                             (0, 0, 255)
                             
                         )
@@ -127,10 +128,10 @@ class Map:
                     elif j == len(self.map_grid[0]) - 1 and i+1 < len(self.map_grid) and self.map_grid[i+1][j] == 3:
                         wall = Wall(
                             game, 
-                            j*self.GAP + self.INTIIAL_X_GAP, 
-                            i*self.GAP + self.INTIIAL_Y_GAP, 
-                            self.GAP * 2,
-                            self.GAP, 
+                            j*self.TILE_SIZE + self.INITIAL_X_GAP, 
+                            i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                            self.TILE_SIZE * 3,
+                            self.TILE_SIZE, 
                             (0, 0, 255)
                             )
                         game.walls.add(wall)
@@ -140,11 +141,10 @@ class Map:
 
                     
                 if item == 4:
-                    game.pacman.x = j*self.GAP + self.INTIIAL_X_GAP//2 - game.pacman.SIZE 
-                    game.pacman.y = i*self.GAP + self.INTIIAL_Y_GAP//2 - game.pacman.SIZE 
+                    game.pacman.x = j*self.TILE_SIZE + self.INITIAL_X_GAP//2 - game.pacman.SIZE 
+                    game.pacman.y = i*self.TILE_SIZE + self.INITIAL_Y_GAP//2 - game.pacman.SIZE 
 
 
-                print(len(game.consumables.sprites()))
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y, width, height, color):
