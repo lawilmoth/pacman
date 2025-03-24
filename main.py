@@ -71,7 +71,19 @@ class Game:
                 if not pygame.mixer.get_busy():
                     self.sm.chomp_sound.play()
                 for ghost in self.ghosts.sprites():
-                    ghost.set_frightened()
+                    if ghost.mode != "eaten":
+                        ghost.set_frightened()
+
+            collisions = pygame.sprite.spritecollide(self.pacman, self.ghosts, False)
+            if collisions:
+                for ghost in collisions:
+                    if ghost.mode == "frightened":
+                        print("Ghost eaten")
+                        ghost.mode = "eaten"
+                        
+                    elif ghost.mode != "eaten":
+                        print("Pacman eaten")
+                        
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -130,10 +142,12 @@ class Game:
             ghost.blit(self)
 
         for check in self.pacman.moves_rects.values():
-            pygame.draw.rect(self.window, (255, 0, 0), check)
+            #pygame.draw.rect(self.window, (255, 0, 0), check)
+            pass
         for ghost in self.ghosts.sprites():
             for check in ghost.moves_rects.values():
-                pygame.draw.rect(self.window, (255, 0, 0), check)
+                #pygame.draw.rect(self.window, (255, 0, 0), check)
+                pass
         self.pacman.blit(self)
 
 

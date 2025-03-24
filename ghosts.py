@@ -1,7 +1,8 @@
 from pm_sprites import PM_Sprite
 import pygame
 import random
-
+from settings import Settings
+settings = Settings()
 #Tile priority is up left down right
 
 class Ghost(PM_Sprite):
@@ -10,6 +11,7 @@ class Ghost(PM_Sprite):
     frightened_count = 0
     FRIGHTENED_TO_BLINK_TIME = 3
     FRIGHTENED_TIME = 5
+    GHOST_HOUSE_COORDS = (settings.TILE_SIZE*13 + settings.INITIAL_X_GAP, settings.TILE_SIZE*11 + settings.INITIAL_Y_GAP)
     
     def __init__(self, game, x, y, name="pinky"):
         super().__init__(game, x, y, name)
@@ -44,7 +46,9 @@ class Ghost(PM_Sprite):
             self.SPRITE_SIZE, 
             4)
         
-        self.blink_sprites.extend(self.frightened_sprites)
+        self.dead_sprites.extend(self.dead_sprites)
+
+
 
     def set_frightened(self):
         if self.mode != "frightened":
@@ -105,8 +109,9 @@ class Ghost(PM_Sprite):
             elif Ghost.frightened_count >= self.FRIGHTENED_TO_BLINK_TIME*self.settings.FPS:
                 self.sprites = self.blink_sprites
                 
-            #print(self.target)  
- 
+        if self.mode == "eaten":
+            self.sprites = self.dead_sprites 
+            self.target = self.GHOST_HOUSE_COORDS
 
 
         

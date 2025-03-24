@@ -148,6 +148,7 @@ class Map:
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y, width, height, color):
+        self.name == "wall"
         super().__init__()
         self.x = x
         self.y = y
@@ -161,4 +162,9 @@ class Wall(pygame.sprite.Sprite):
 
     def draw(self):
         pygame.draw.rect(self.game.window, self.color, self.rect)
+
+class Gate(Wall):
+    def __init__(self, game, x, y, width, height, color):
+        super().__init__(game, x, y, width, height, color)
+        self.name == "gate"
 
