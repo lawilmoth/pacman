@@ -7,8 +7,9 @@ class PM_Sprite(Sprite):
     current_frame = 0
     FRAME_RATE = 1
     SPEED = settings.TILE_SIZE
-    SIZE = 14
-    MOVE_DECTECTOR_SIZE = 4 * settings.SCALE_FACTOR
+    SPRITE_SIZE = 14
+    SIZE = SPRITE_SIZE*settings.SCALE_FACTOR
+    
     OFFSET = - settings.SCALE_FACTOR*2
 
 
@@ -19,7 +20,7 @@ class PM_Sprite(Sprite):
         super().__init__()
         self.sprite_sheet = SpriteSheet("images\pacman.png")
 
-        self.rect = pygame.Rect(0, 0, self.SIZE * 3, self.SIZE *3 )
+        self.rect = pygame.Rect(0, 0, self.SIZE , self.SIZE) 
         self.x:int = x
         self.y:int = y
         self.name = name
@@ -28,10 +29,10 @@ class PM_Sprite(Sprite):
         self.game = game
 
         self.moves_rects = {
-            "right": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),
-            "left": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),
-            "up": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),
-            "down": pygame.Rect(0, 0, self.MOVE_DECTECTOR_SIZE, self.MOVE_DECTECTOR_SIZE),    
+            "right": pygame.Rect(0, 0, self.SIZE//2, self.SIZE),
+            "left": pygame.Rect(0, 0, self.SIZE//2, self.SIZE),
+            "up": pygame.Rect(0, 0, self.SIZE, self.SIZE//2),
+            "down": pygame.Rect(0, 0, self.SIZE, self.SIZE//2),    
         }
         
         
@@ -56,13 +57,13 @@ class PM_Sprite(Sprite):
         
         for key, rect in self.moves_rects.items():
             if key == "up":
-                rect.topleft = (self.rect.centerx  +self.OFFSET, self.rect.centery - 1.5*self.SPEED +self.OFFSET)
+                rect.bottomleft = (self.rect.x, self.rect.top)
             elif key == "down":
-                rect.topleft = (self.rect.centerx  +self.OFFSET, self.rect.centery + 1.5*self.SPEED +self.OFFSET)
+                rect.topleft = (self.rect.x, self.rect.bottom)
             elif key == "right":
-                rect.topleft = (self.rect.centerx + 1.5*self.SPEED +self.OFFSET, self.rect.centery +self.OFFSET)
+                rect.topleft = (self.rect.right, self.y )
             elif key == "left":
-                rect.topleft = (self.rect.centerx - 1.5*self.SPEED +self.OFFSET, self.rect.centery +self.OFFSET)
+                rect.topright = (self.rect.x, self.rect.y)
         
     def can_move(self, direction):
         if direction and direction != "stop":
@@ -103,11 +104,11 @@ class PM_Sprite(Sprite):
                 self.sprites = self.stop_sprites
     
     def check_teleport(self):
-        if self.x < 0 - 2*self.SIZE:
+        if self.x < 0 - self.SIZE:
             if self.direction == "left":
                 self.x = self.settings.INITIAL_X_GAP + self.game.settings.TILE_SIZE * (self.game.settings.NUMBER_OF_TILES_X + 1)
 
-        elif self.x > self.game.WIDTH + self.SIZE:
+        elif self.x > self.game.WIDTH :
             if self.direction == "right":
                 self.x = self.settings.INITIAL_X_GAP - self.game.settings.TILE_SIZE
 

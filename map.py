@@ -1,5 +1,5 @@
 import pygame
-from consumable import Consumable
+from consumable import Consumable, PowerPellet
 from spritesheet import SpriteSheet
 from settings import Settings
 settings = Settings()
@@ -70,14 +70,14 @@ class Map:
                         )
                     game.consumables.add(cons)
                 if item == 2:
-                    cons = Consumable(
+                    cons = PowerPellet(
                         game, 
                         j*self.TILE_SIZE + self.INITIAL_X_GAP, 
                         i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
                         settings.CONSUMABLE_SIZE*5, 
                         settings.CONSUMABLE_COLOR
                         )
-                    game.consumables.add(cons)
+                    game.power_pellets.add(cons)
                 if item == 3:
                     if  i < len(self.map_grid) - 1 and j < len(self.map_grid[0]) - 1 :
                         if self.map_grid[i+1][j] == 3 and self.map_grid[i][j+1] == 3 and self.map_grid[i+1][j+1] == 3 :
@@ -141,8 +141,8 @@ class Map:
 
                     
                 if item == 4:
-                    game.pacman.x = j*self.TILE_SIZE + self.INITIAL_X_GAP//2 - game.pacman.SIZE 
-                    game.pacman.y = i*self.TILE_SIZE + self.INITIAL_Y_GAP//2 - game.pacman.SIZE 
+                    game.pacman.x = j*self.TILE_SIZE + self.INITIAL_X_GAP//2 - game.pacman.SPRITE_SIZE 
+                    game.pacman.y = i*self.TILE_SIZE + self.INITIAL_Y_GAP//2 - game.pacman.SPRITE_SIZE
 
 
 

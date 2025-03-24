@@ -2,7 +2,7 @@ import pygame
 
 from pacman import Pacman
 from map import Map
-from ghosts import Ghost, Inky, Pinky
+from ghosts import Ghost, Inky, Pinky, Blinky, Clyde
 from settings import Settings
 from sound_mixer import SoundMixer
 class Game:
@@ -21,13 +21,20 @@ class Game:
         self.running = True
         self.pacman = Pacman(self)
         self.consumables = pygame.sprite.Group()
+        self.power_pellets = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
 
         self.inky = Inky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
         self.pinky = Pinky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
+        self.blinky = Blinky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
+        self.clyde = Clyde(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
+
         self.ghosts.add(self.inky)
         self.ghosts.add(self.pinky)
+        self.ghosts.add(self.blinky)
+        self.ghosts.add(self.clyde)
+
 
         self.map = Map()
         self.map.load_map(self)
@@ -35,11 +42,10 @@ class Game:
     def run(self):
         while self.running:
             self._check_events()
+            self._check_collisions()
 
-            collisions = pygame.sprite.spritecollide(self.pacman, self.consumables, True)
-            if collisions:
-                if not pygame.mixer.get_busy():
-                    self.sm.chomp_sound.play()
+
+
             self.pacman.update_image()
 
             self.pacman.move()
@@ -52,6 +58,20 @@ class Game:
 
 
             self._update_screen()
+
+
+    def _check_collisions(self):
+            collisions = pygame.sprite.spritecollide(self.pacman, self.consumables, True)
+            if collisions:
+                if not pygame.mixer.get_busy():
+                    self.sm.chomp_sound.play()
+
+            collisions = pygame.sprite.spritecollide(self.pacman, self.power_pellets, True)
+            if collisions:
+                if not pygame.mixer.get_busy():
+                    self.sm.chomp_sound.play()
+                for ghost in self.ghosts.sprites():
+                    ghost.set_frightened()
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -99,6 +119,8 @@ class Game:
 
         for cons in self.consumables.sprites():
             cons.draw()
+        for pp in self.power_pellets.sprites():
+            pp.draw()
         for wall in self.walls.sprites():
             #wall.draw()
             pass
@@ -118,6 +140,11 @@ class Game:
         pygame.display.update()
 
         self.frame_count += 1
+        for ghost in self.ghosts.sprites():
+            if ghost.mode == "frightened":
+                Ghost.frightened_count += 1
+                break
+
         self.clock.tick(15)
 
 ##################-----Main Code------#######################
