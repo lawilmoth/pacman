@@ -69,6 +69,11 @@ class PM_Sprite(Sprite):
         if direction and direction != "stop":
             for wall in self.game.walls.sprites():
                 if wall.rect.colliderect(self.moves_rects[direction]):
+
+                    if wall.name == "gate" and self.name != "pacman":
+                        if self.mode == "eaten":
+                            
+                            return True
                     return False
         return True
     

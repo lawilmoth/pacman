@@ -11,6 +11,7 @@ class Game:
         self.settings = Settings()
         pygame.init()
         self.sm = SoundMixer()
+
         #play beginning sound
         self.sm.beginning_sound.play()
         self.clock = pygame.time.Clock()
@@ -34,9 +35,9 @@ class Game:
         self.ghosts.add(self.pinky)
         self.ghosts.add(self.blinky)
         self.ghosts.add(self.clyde)
-
-
         self.map = Map()
+
+
         self.map.load_map(self)
 
     def run(self):
@@ -134,12 +135,13 @@ class Game:
         for pp in self.power_pellets.sprites():
             pp.draw()
         for wall in self.walls.sprites():
-            #wall.draw()
-            pass
+            wall.draw()
+            #pass
         for ghost in self.ghosts.sprites():
             ghost.check_target()
             ghost.update()
             ghost.blit(self)
+            
 
         for check in self.pacman.moves_rects.values():
             #pygame.draw.rect(self.window, (255, 0, 0), check)

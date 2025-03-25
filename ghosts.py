@@ -11,7 +11,7 @@ class Ghost(PM_Sprite):
     frightened_count = 0
     FRIGHTENED_TO_BLINK_TIME = 3
     FRIGHTENED_TIME = 5
-    GHOST_HOUSE_COORDS = (settings.TILE_SIZE*13 + settings.INITIAL_X_GAP, settings.TILE_SIZE*11 + settings.INITIAL_Y_GAP)
+    GHOST_HOUSE_COORDS = (settings.TILE_SIZE*13 + settings.INITIAL_X_GAP, settings.TILE_SIZE*15 + settings.INITIAL_Y_GAP)
     
     def __init__(self, game, x, y, name="pinky"):
         super().__init__(game, x, y, name)
@@ -20,6 +20,7 @@ class Ghost(PM_Sprite):
         self.speed = (0, 0)
         self.target = (0, 0)
         self.mode = "scatter"
+        self.distance_to_target = None
         self.frightened_sprites = self.sprite_sheet.get_images(
             self.sprite_sheet.SS_REFERENCE[0] + 8 *self.sprite_sheet.SS_GAP, 
             self.sprite_sheet.SS_REFERENCE[1] + 4 *self.sprite_sheet.SS_GAP, 
@@ -48,7 +49,8 @@ class Ghost(PM_Sprite):
         
         self.dead_sprites.extend(self.dead_sprites)
 
-
+    def __str__(self):
+        return f"{self.name}: ({self.x}, {self.y}) \nDIRECTION {self.current_direction} CLOSEST_DISTANCE {self.distance_to_target} \nMODE: {self.mode}\n"
 
     def set_frightened(self):
         if self.mode != "frightened":
@@ -92,16 +94,17 @@ class Ghost(PM_Sprite):
                 self.current_direction = "down"
             
 
-    def update_target(self):
-
-        if self.game.frame_count == self.scatter_time*self.settings.FPS and self.mode == "scatter":
-            self.mode = "chase"
-            self.change_directions()
+    def update_state(self):
+        """Updates the state of the ghost between scatter, chase, frightened, and eaten"""
+        if self.mode == "scatter":
+            if self.game.frame_count == self.scatter_time*self.settings.FPS:
+                self.mode = "chase"
+                self.change_directions()
 
         if self.mode == "frightened":
             if Ghost.frightened_count > self.FRIGHTENED_TIME*self.settings.FPS:
                 Ghost.frightened_count = 0
-            if Ghost.frightened_count >= self.FRIGHTENED_TIME*self.settings.FPS:
+
                 self.mode = "chase"
                 self.change_directions()
                 self.sprites = self.sprites_default
@@ -113,13 +116,57 @@ class Ghost(PM_Sprite):
             self.sprites = self.dead_sprites 
             self.target = self.GHOST_HOUSE_COORDS
 
+            if pygame.sprite.collide_rect(self, self.game.map.ghost_house):
+                self.change_directions()
+                self.sprites = self.sprites_default
+                self.mode = "scatter"
+                self.current_direction = "up"
+
 
         
 
 
     def move(self):
-        self.update_target()
-        # if canmove dir, check distance to target
+        self.update_state()
+        move_choices = self._check_legal_moves()
+        self._check_distance(move_choices)
+        self.set_move(self.current_direction)
+
+        if self.mode == "frightened":
+            self.x += self.speed[0]//2
+            self.y += self.speed[1]//2
+        else:
+            self.x += self.speed[0]
+            self.y += self.speed[1]
+        self.current_frame += 1
+        self.current_frame %= self.SPRITE_SHEET_FRAMES
+        self.image = self.sprites[self.current_frame]
+        
+
+        self.check_teleport()
+
+    def _check_distance(self, move_choices):
+        if self.mode != "frightened":
+            closest_distance = 1000000
+        if self.mode == "frightened":
+            closest_distance = -1
+
+        
+        for key, value in move_choices.items():
+            if value:
+                rect = self.moves_rects[key]
+                distance = ((rect.centerx - self.target[0])**2 + (rect.centery - self.target[1])**2)**0.5
+                if self.mode != "frightened":
+                    if distance < closest_distance:
+                        closest_distance = distance
+                        self.current_direction = key
+                elif self.mode == "frightened":
+                    if distance > closest_distance:
+                        closest_distance = distance
+                        self.current_direction = key
+        self.distance_to_target = closest_distance
+
+    def _check_legal_moves(self):
         move_choices = {"up": True,
                         "down":True,
                         "left": True,
@@ -139,44 +186,11 @@ class Ghost(PM_Sprite):
                 move_choices[key] = False
         
         self.current_direction = None
+        return move_choices
 
-        if self.mode != "frightened":
-            closest_distance = 1000000
-        if self.mode == "frightened":
-            closest_distance = -1
-
-        
-        for key, value in move_choices.items():
-            if value:
-                rect = self.moves_rects[key]
-                distance = ((rect.centerx - self.target[0])**2 + (rect.centery - self.target[1])**2)**0.5
-                if self.mode != "frightened":
-                    if distance < closest_distance:
-                        closest_distance = distance
-                        self.current_direction = key
-                elif self.mode == "frightened":
-                    if distance > closest_distance:
-                        closest_distance = distance
-                        self.current_direction = key
-
-        
-
-
-        self.set_move(self.current_direction)
-        if self.mode == "frightened":
-            self.x += self.speed[0]//2
-            self.y += self.speed[1]//2
-        else:
-            self.x += self.speed[0]
-            self.y += self.speed[1]
-        self.current_frame += 1
-        self.current_frame %= self.SPRITE_SHEET_FRAMES
-        self.image = self.sprites[self.current_frame]
-        
-
-        self.check_teleport()
-
-
+    def check_target(self):
+        if self.mode == "eaten":
+            self.target = self.GHOST_HOUSE_COORDS
 
 class Pinky(Ghost):
     def __init__(self, game, x, y):
@@ -192,6 +206,8 @@ class Pinky(Ghost):
         self.image = self.sprites[self.current_frame]
 
     def check_target(self):
+        super().check_target()
+
         if self.mode == "scatter":
             self.target = (0,0)
         elif self.mode == "chase":
@@ -213,6 +229,8 @@ class Inky(Ghost):
         self.image = self.sprites[self.current_frame]
 
     def check_target(self):
+        super().check_target()
+
         if self.mode == "scatter":
             self.target= (self.game.WIDTH, self.game.HEIGHT)
         elif self.mode == "chase":
@@ -232,6 +250,8 @@ class Blinky(Ghost):
         self.image = self.sprites[self.current_frame]
 
     def check_target(self):
+        super().check_target()
+
         if self.mode == "scatter":
             self.target= (self.game.WIDTH, 0)
         elif self.mode == "chase":
@@ -252,6 +272,7 @@ class Clyde(Ghost):
         self.image = self.sprites[self.current_frame]
 
     def check_target(self):
+        super().check_target()
         if self.mode == "scatter":
             self.target= (0, self.game.HEIGHT)
         elif self.mode == "chase":

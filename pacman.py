@@ -8,6 +8,7 @@ class Pacman(PM_Sprite):
         self.settings = game.settings
         self.ss_pacman_x = self.settings.PACMAN_SPRITESHEET_REFERENCE[0]
         self.ss_pacman_y = self.settings.PACMAN_SPRITESHEET_REFERENCE[1]
+        self.name = "pacman"
 
         
         super().__init__(game, self.settings.PACMAN_SPAWN_X, self.settings.PACMAN_SPAWN_Y, "pacman")

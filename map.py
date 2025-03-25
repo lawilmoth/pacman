@@ -9,6 +9,8 @@ class Map:
     INITIAL_X_GAP = settings.INITIAL_X_GAP
     INITIAL_Y_GAP = settings.INITIAL_Y_GAP
     def __init__(self):
+        self.ghost_house = GhostHouse(self)
+
         self.bg_image = SpriteSheet("images\pacman.png").get_image(228, 0, 228, 250)
         # 0 = empty space
         # 1 = pellet
@@ -30,7 +32,7 @@ class Map:
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 0, 3, 3, 0, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3],
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 0, 3, 3, 0, 3, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3],
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
-                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
+                [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 5, 5, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
                 [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
                 [3, 3, 3, 3, 3, 3, 1, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 3, 3],
@@ -56,7 +58,6 @@ class Map:
 
 
     def load_map(self, game):
-        
         for i, row in enumerate(self.map_grid):
             for j, item in enumerate(row):
                 
@@ -143,18 +144,30 @@ class Map:
                 if item == 4:
                     game.pacman.x = j*self.TILE_SIZE + self.INITIAL_X_GAP//2 - game.pacman.SPRITE_SIZE 
                     game.pacman.y = i*self.TILE_SIZE + self.INITIAL_Y_GAP//2 - game.pacman.SPRITE_SIZE
-
+                
+                if item == 5:
+                    wall = Gate(
+                            game, 
+                            j*self.TILE_SIZE + self.INITIAL_X_GAP, 
+                            i*self.TILE_SIZE + self.INITIAL_Y_GAP, 
+                            self.TILE_SIZE,
+                            self.TILE_SIZE, 
+                            (255, 255, 255)
+                            )
+                    print(i, j)
+                    game.walls.add(wall)
 
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y, width, height, color):
-        self.name == "wall"
+        self.name = "wall"
+        self.color = color
         super().__init__()
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.color = color
+        
         self.game = game
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         
@@ -166,5 +179,14 @@ class Wall(pygame.sprite.Sprite):
 class Gate(Wall):
     def __init__(self, game, x, y, width, height, color):
         super().__init__(game, x, y, width, height, color)
-        self.name == "gate"
+        self.name = "gate"
+        self.color = (255, 255, 255)
 
+class GhostHouse(pygame.sprite.Sprite):
+    def __init__(self, map):
+        
+        self.name = "ghost house"
+        self.rect = pygame.Rect(
+            13*map.TILE_SIZE + map.INITIAL_X_GAP, 
+            14*map.TILE_SIZE + map.INITIAL_Y_GAP, 
+            2*map.TILE_SIZE, 2*map.TILE_SIZE)
