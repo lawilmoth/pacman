@@ -92,7 +92,14 @@ class Ghost(PM_Sprite):
                 self.current_direction = "up"
             elif self.can_move("down"):
                 self.current_direction = "down"
-            
+
+    def respawn(self):
+        self.x = self.settings.GHOST_SPAWNS[self.name][0]
+        self.y = self.settings.GHOST_SPAWNS[self.name][1]
+
+        self.mode = "scatter"
+        self.current_direction = "up"
+        self.sprites = self.sprites_default        
 
     def update_state(self):
         """Updates the state of the ghost between scatter, chase, frightened, and eaten"""

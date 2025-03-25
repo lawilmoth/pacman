@@ -7,7 +7,7 @@ class PM_Sprite(Sprite):
     current_frame = 0
     FRAME_RATE = 1
     SPEED = settings.TILE_SIZE
-    SPRITE_SIZE = 14
+    SPRITE_SIZE = settings.SPRITE_SIZE 
     SIZE = SPRITE_SIZE*settings.SCALE_FACTOR
     
     OFFSET = - settings.SCALE_FACTOR*2

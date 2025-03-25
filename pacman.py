@@ -9,6 +9,7 @@ class Pacman(PM_Sprite):
         self.ss_pacman_x = self.settings.PACMAN_SPRITESHEET_REFERENCE[0]
         self.ss_pacman_y = self.settings.PACMAN_SPRITESHEET_REFERENCE[1]
         self.name = "pacman"
+        self.lives = 3
 
         
         super().__init__(game, self.settings.PACMAN_SPAWN_X, self.settings.PACMAN_SPAWN_Y, "pacman")
@@ -91,4 +92,14 @@ class Pacman(PM_Sprite):
                 return direction
 
 
-        
+    def handle_pacman_death(self):
+        self.lives -= 1
+        self.respawn()
+        time.sleep(1)
+
+    def respawn(self):
+        self.x = self.settings.PACMAN_SPAWN_X
+        self.y = self.settings.PACMAN_SPAWN_Y
+        self.direction = "stop"
+        self.speed = (0, 0)
+        self.sprites = self.stop_sprites

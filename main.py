@@ -26,10 +26,10 @@ class Game:
         self.walls = pygame.sprite.Group()
         self.ghosts = pygame.sprite.Group()
 
-        self.inky = Inky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
-        self.pinky = Pinky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
-        self.blinky = Blinky(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
-        self.clyde = Clyde(self, self.settings.PACMAN_SPAWN_X,self.settings.PACMAN_SPAWN_Y)
+        self.inky = Inky(self, self.settings.GHOST_SPAWNS["inky"][0],self.settings.GHOST_SPAWNS["inky"][1])
+        self.pinky = Pinky(self, self.settings.GHOST_SPAWNS["pinky"][0],self.settings.GHOST_SPAWNS["pinky"][1])
+        self.blinky = Blinky(self, self.settings.GHOST_SPAWNS["blinky"][0],self.settings.GHOST_SPAWNS["blinky"][1])
+        self.clyde = Clyde(self, self.settings.GHOST_SPAWNS["clyde"][0],self.settings.GHOST_SPAWNS["clyde"][1])
 
         self.ghosts.add(self.inky)
         self.ghosts.add(self.pinky)
@@ -43,7 +43,8 @@ class Game:
     def run(self):
         while self.running:
             self._check_events()
-            self._check_collisions()
+            if self.frame_count >2:
+                self._check_collisions()
 
 
 
@@ -83,7 +84,11 @@ class Game:
                         ghost.mode = "eaten"
                         
                     elif ghost.mode != "eaten":
+                        self.pacman.handle_pacman_death()
+                        print(self.pacman.lives)
                         print("Pacman eaten")
+                        for ghost in self.ghosts.sprites():
+                            ghost.respawn()
                         
 
     def _check_events(self):
@@ -161,7 +166,7 @@ class Game:
                 Ghost.frightened_count += 1
                 break
 
-        self.clock.tick(15)
+        self.clock.tick(14)
 
 ##################-----Main Code------#######################
 game = Game()
