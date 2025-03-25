@@ -80,6 +80,8 @@ class Game:
             if collisions:
                 for ghost in collisions:
                     if ghost.mode == "frightened":
+                        pygame.mixer.stop()
+                        self.sm.eat_ghost.play()
                         print("Ghost eaten")
                         ghost.mode = "eaten"
                         
@@ -87,8 +89,11 @@ class Game:
                         self.pacman.handle_pacman_death()
                         print(self.pacman.lives)
                         print("Pacman eaten")
+
                         for ghost in self.ghosts.sprites():
                             ghost.respawn()
+
+                        
                         
 
     def _check_events(self):
@@ -166,7 +171,7 @@ class Game:
                 Ghost.frightened_count += 1
                 break
 
-        self.clock.tick(14)
+        self.clock.tick(self.settings.FPS)  
 
 ##################-----Main Code------#######################
 game = Game()

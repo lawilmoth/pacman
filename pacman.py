@@ -10,6 +10,7 @@ class Pacman(PM_Sprite):
         self.ss_pacman_y = self.settings.PACMAN_SPRITESHEET_REFERENCE[1]
         self.name = "pacman"
         self.lives = 3
+        self.state = "alive"
 
         
         super().__init__(game, self.settings.PACMAN_SPAWN_X, self.settings.PACMAN_SPAWN_Y, "pacman")
@@ -48,6 +49,12 @@ class Pacman(PM_Sprite):
         #added the circle
         self.sprites_down.append(self.circle_frame)
 
+        #Add dead_sprites
+        self.dead_sprites = self.sprite_sheet.get_images(
+            self.ss_pacman_x + 2*self.sprite_sheet.SS_GAP, 
+            0*self.sprite_sheet.SS_GAP, self.SPRITE_SIZE,  
+            self.SPRITE_SIZE, 
+            12)
 
         self.sprites = self.stop_sprites
         
@@ -93,13 +100,27 @@ class Pacman(PM_Sprite):
 
 
     def handle_pacman_death(self):
+        pygame.mixer.stop()
+        self.game.sm.dead_sound.play()
         self.lives -= 1
+        self.sprites = self.dead_sprites
+        self.state = "dead"
+        self.current_frame = 0
+        for i in range(len(self.sprites)):
+            self.current_sprite = i
+            self.image = self.sprites[self.current_sprite]
+            self.game.window.blit(self.image, (self.x, self.y))
+            pygame.display.flip()
+            self.game.clock.tick(self.settings.FPS)
+
         self.respawn()
         time.sleep(1)
 
     def respawn(self):
+        self.state = "alive"
         self.x = self.settings.PACMAN_SPAWN_X
         self.y = self.settings.PACMAN_SPAWN_Y
         self.direction = "stop"
         self.speed = (0, 0)
         self.sprites = self.stop_sprites
+        self.rect.topleft = (self.x, self.y)

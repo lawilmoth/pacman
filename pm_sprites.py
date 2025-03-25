@@ -71,7 +71,7 @@ class PM_Sprite(Sprite):
                 if wall.rect.colliderect(self.moves_rects[direction]):
 
                     if wall.name == "gate" and self.name != "pacman":
-                        if self.mode == "eaten":
+                        if self.mode == "eaten" or self.mode == "scatter":
                             
                             return True
                     return False

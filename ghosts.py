@@ -97,7 +97,7 @@ class Ghost(PM_Sprite):
         self.x = self.settings.GHOST_SPAWNS[self.name][0]
         self.y = self.settings.GHOST_SPAWNS[self.name][1]
 
-        self.mode = "scatter"
+        self.mode = "chase"
         self.current_direction = "up"
         self.sprites = self.sprites_default        
 
@@ -124,7 +124,7 @@ class Ghost(PM_Sprite):
             self.target = self.GHOST_HOUSE_COORDS
 
             if pygame.sprite.collide_rect(self, self.game.map.ghost_house):
-                self.change_directions()
+                
                 self.sprites = self.sprites_default
                 self.mode = "scatter"
                 self.current_direction = "up"
@@ -137,6 +137,8 @@ class Ghost(PM_Sprite):
         self.update_state()
         move_choices = self._check_legal_moves()
         self._check_distance(move_choices)
+        if self.name == "pinky":
+            print(self.current_direction)
         self.set_move(self.current_direction)
 
         if self.mode == "frightened":
@@ -192,7 +194,7 @@ class Ghost(PM_Sprite):
             if not self.can_move(key):
                 move_choices[key] = False
         
-        self.current_direction = None
+        #self.current_direction = None
         return move_choices
 
     def check_target(self):
@@ -218,7 +220,15 @@ class Pinky(Ghost):
         if self.mode == "scatter":
             self.target = (0,0)
         elif self.mode == "chase":
-            self.target = (self.game.pacman.x, self.game.pacman.y)
+            if self.game.pacman.direction == "right":
+                self.target = (self.game.pacman.x + 2 *settings.TILE_SIZE, self.game.pacman.y)  
+            elif self.game.pacman.direction == "left":
+                self.target = (self.game.pacman.x - 2 *settings.TILE_SIZE, self.game.pacman.y)  
+            if self.game.pacman.direction == "up":
+                self.target = (self.game.pacman.x - 2 *settings.TILE_SIZE, self.game.pacman.y - 2 *settings.TILE_SIZE)  
+            elif self.game.pacman.direction == "down":
+                self.target = (self.game.pacman.x , self.game.pacman.y + 2 *settings.TILE_SIZE)  
+
 
         
 
@@ -237,11 +247,15 @@ class Inky(Ghost):
 
     def check_target(self):
         super().check_target()
+        blinky_location = (self.game.blinky.x, self.game.blinky.y)
+        pinky_target = self.game.pinky.target
+        distance_x = blinky_location[0] - pinky_target[0]
+        distance_y = blinky_location[1] - pinky_target[1] 
 
         if self.mode == "scatter":
             self.target= (self.game.WIDTH, self.game.HEIGHT)
         elif self.mode == "chase":
-            self.target = (self.game.pacman.x, self.game.pacman.y)
+            self.target = (distance_x*2, distance_y*2)
         
 class Blinky(Ghost):
     def __init__(self, game, x, y):
@@ -277,10 +291,18 @@ class Clyde(Ghost):
             self.SPRITE_SHEET_FRAMES)
         self.sprites = self.sprites_default
         self.image = self.sprites[self.current_frame]
+        self.scatter_target = (0, self.game.HEIGHT)
+
+    def get_distance(self, target):
+        distance = ((self.x - target[0])**2 + (self.y - target[1])**2)**0.5
+        return distance
 
     def check_target(self):
         super().check_target()
         if self.mode == "scatter":
-            self.target= (0, self.game.HEIGHT)
+            self.target= self.scatter_target
         elif self.mode == "chase":
-            self.target = (self.game.pacman.x, self.game.pacman.y)
+            if self.get_distance((self.game.pacman.x, self.game.pacman.y)) < 8*settings.TILE_SIZE:
+                self.target = self.scatter_target
+            else:   
+                self.target = (self.game.pacman.x, self.game.pacman.y)
